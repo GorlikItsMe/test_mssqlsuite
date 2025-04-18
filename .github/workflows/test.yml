@@ -10,7 +10,7 @@ jobs:
       fail-fast: false
       matrix:
         # os: [ubuntu-latest, windows-latest, macOS-latest]
-        os: [ubuntu-20.04, ubuntu-22.04, ubuntu-24.04, ubuntu-latest]
+        os: [ubuntu-22.04, ubuntu-24.04, ubuntu-latest]
         version: ["2017", "2019", "2022"]
         
     steps:
@@ -26,4 +26,4 @@ jobs:
           collation: Latin1_General_BIN
 
       - name: Run sqlcmd
-        run: sqlcmd -S localhost -U sa -P c0MplicatedP@ssword -d tempdb -Q "SELECT @@version;"
+        run: sqlcmd -C -S localhost -U sa -P c0MplicatedP@ssword -d tempdb -Q "SELECT @@version;"
