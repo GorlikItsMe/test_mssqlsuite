@@ -19,7 +19,7 @@ jobs:
       - name: Run the action
         uses: potatoqualitee/mssqlsuite@v1.7
         with:
-          install: sqlengine, sqlclient, sqlpackage
+          install: sqlengine
           version: ${{ matrix.version }}
           sa-password: c0MplicatedP@ssword
           show-log: true
@@ -30,9 +30,10 @@ jobs:
 
       - name: Run sqlcmd with retry
         run: |
+          sudo apt-get update && sudo apt-get install -y mssql-tools
           for i in {1..3}; do
             echo "Attempt #$i..."
-            if sqlcmd -C -S localhost -U sa -P c0MplicatedP@ssword -d tempdb -Q "SELECT @@version;"; then
+            if /opt/mssql-tools/bin/sqlcmd -C -S localhost -U sa -P c0MplicatedP@ssword -d tempdb -Q "SELECT @@version;"; then
               echo "sqlcmd succeeded on attempt #$i"
               break
             elif [ $i -lt 3 ]; then
