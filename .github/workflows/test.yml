@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Run the action
-        uses: potatoqualitee/mssqlsuite@v1.7
+        uses: potatoqualitee/mssqlsuite@v1.8
         with:
           install: sqlengine
           version: ${{ matrix.version }}
