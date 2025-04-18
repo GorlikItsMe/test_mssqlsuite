@@ -25,5 +25,21 @@ jobs:
           show-log: true
           collation: Latin1_General_BIN
 
-      - name: Run sqlcmd
-        run: sqlcmd -C -S localhost -U sa -P c0MplicatedP@ssword -d tempdb -Q "SELECT @@version;"
+      # - name: Run sqlcmd
+      #   run: sqlcmd -C -S localhost -U sa -P c0MplicatedP@ssword -d tempdb -Q "SELECT @@version;"
+
+      - name: Run sqlcmd with retry
+        run: |
+          for i in {1..3}; do
+            echo "Attempt #$i..."
+            if sqlcmd -C -S localhost -U sa -P c0MplicatedP@ssword -d tempdb -Q "SELECT @@version;"; then
+              echo "sqlcmd succeeded on attempt #$i"
+              break
+            elif [ $i -lt 3 ]; then
+              echo "sqlcmd failed. Retrying in 5 seconds..."
+              sleep 5
+            else
+              echo "sqlcmd failed after 3 attempts."
+              exit 1
+            fi
+          done
